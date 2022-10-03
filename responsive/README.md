@@ -5,4 +5,4 @@
   - [Loi Truong](https://github.com/loitruong)
   
 # Number of working hours
-  1 hours
+  1 hour
