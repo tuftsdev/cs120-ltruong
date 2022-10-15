@@ -1,0 +1,38 @@
+/*
+empty for now
+*/
+html{
+	background: #474747;
+}
+body{
+	width: 800px;
+	margin: 50px auto;
+	text-align: center;
+}
+h1{
+	color:  white;
+}
+video#butwehavethepower{
+	width: 100%;
+	height: auto;
+	position: relative;
+	z-index: 1;
+}
+
+p{
+	margin:  0;
+	background: white;
+	color:  black;
+	padding:  30px 15px;
+	font-size: 22px;
+	font-weight: 600;
+}
+span{
+	font-weight: 800;
+}
+.lisa{
+	color: #eb8093;
+}
+.lenny{
+	color: #35c0ff;
+}

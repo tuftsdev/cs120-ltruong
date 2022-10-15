@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Union Strike Folk Song</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<h1 id="title">Union Strike Folk Song</h1>
+
+<video src="https://www.cs.tufts.edu/comp/120/butwehavethepower.mp4" id="butwehavethepower" controls></video>
+<div id="lyrics"></div>
+
+<script>
+  //lyrics object has start and end time base by line
+  const lyricsObj =[{
+      text: "<span>Lisa:</span> Come gather round, children,",
+      start: 6.2,
+      end: 8.9,
+      person: "lisa"
+    },
+    {
+      text: "It's high time ye learned",
+      start: 8.9,
+      end: 10.7,
+      person: "lisa"
+    },
+    {
+      text: "'Bout a hero named Homer",
+      start: 10.7,
+      end: 13.3,
+      person: "lisa"
+    },
+    {
+      text: "And a devil named Burns.",
+      start: 13.3,
+      end: 17,
+      person: "lisa"
+    },
+    {
+      text: "We'll march 'till we drop",
+      start: 17,
+      end: 19,
+      person: "lisa"
+    },
+    {
+      text: "The girls and the fellas.",
+      start: 19,
+      end: 21.5,
+      person: "lisa"
+    },
+    {
+      text: "We'll fight 'till the death",
+      start: 21.5,
+      end: 23.5,
+      person: "lisa"
+    },
+    {
+      text: "Or else fold like umbrellas.",
+      start: 23.5,
+      end: 27.4,
+      person: "lisa"
+    },
+    {
+      text: "<span>Lisa:</span> So we'll march day and night",
+      start: 38.1,
+      end: 40.5,
+      person: "lisa"
+    },
+    {
+      text: "By the big cooling tower.",
+      start: 40.5,
+      end: 43,
+      person: "lisa"
+    },
+    {
+      text: "They have the plant",
+      start: 43,
+      end: 45.2,
+      person: "lisa"
+    },
+    {
+      text: "But we have the power.",
+      start: 45.2,
+      end: 49.6,
+      person: "lisa"
+    },
+    {
+      text: "<span>Lenny:</span> Now do \"Classical Gas!\"",
+      start: 53.1,
+      end: 54.6,
+      person: "lenny"
+    },
+    {
+      text: "<span>Lisa:</span> So we'll march day and night",
+      start: 73,
+      end: 75.1,
+      person: "lisa"
+    },
+    {
+      text: "By the big cooling tower.",
+      start: 75.1,
+      end: 77.45,
+      person: "lisa"
+    },
+    {
+      text: "They have the plant",
+      start: 77.45,
+      end: 79.8,
+      person: "lisa"
+    },
+    {
+      text: "But we have the power.",
+      start: 79.8,
+      end: 82.15,
+      person: "lisa"
+    },
+    {
+      text: "So we'll march day and night",
+      start: 82.15,
+      end: 84.5,
+      person: "lisa"
+    },
+    {
+      text: "By the big cooling tower.",
+      start: 84.5,
+      end: 87.0,
+      person: "lisa"
+    },
+    {
+      text: "They have the plant",
+      start: 87.0,
+      end: 89.3,
+      person: "lisa"
+    },
+    {
+      text: "But we have the power.",
+      start: 89.3,
+      end: 91.5,
+      person: "lisa"
+    }];
+
+  const videoElement = document.getElementById('butwehavethepower');
+  const lyricsElement = document.getElementById('lyrics');
+  videoElement.ontimeupdate = (event) => {
+    isFoundLyric = false; 
+    for (const line of lyricsObj){
+      if (videoElement.currentTime >= line.start && 
+          videoElement.currentTime <= line.end){
+        lyricsElement.innerHTML = `<p class="${line.person}">${line.text}</p>`;
+        isFoundLyric = true;
+        break;
+      }    
+    };
+    if (!isFoundLyric){
+      lyricsElement.innerHTML = "";
+    }
+  };
+</script>
+</body>
+</html> 
