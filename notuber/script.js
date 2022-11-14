@@ -85,7 +85,7 @@
 
         let xhr = new XMLHttpRequest();
         let userPosition = userGMarker.getPosition();
-        const URL = "https://jordan-marsh.herokuapp.com/rides";
+        const URL = "https://intense-retreat-40766.herokuapp.com/rides";
         const USERNAME = "jLttbNzY";
         const PARAMS = `username=${USERNAME}&lat=${userGMarker.position.lat()}&lng=${userGMarker.position.lng()}`;
         xhr.open("POST", URL);
