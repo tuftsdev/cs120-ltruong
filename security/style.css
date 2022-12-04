@@ -1,0 +1,43 @@
+body{
+	font-size: 1.4em;
+	background: gray;
+}
+.container{
+	background: white;
+	padding: 50px 30px;
+	max-width: 1000px;
+	margin: 50px auto;
+}
+h1{
+	margin-bottom: 20px;
+}
+#group{
+	margin-top: 50px;
+}
+.nav-tabs .nav-link[aria-expanded="true"]{
+	border: 1px solid rgba(0,0,0,.125);
+	color: #212529;
+}
+.nav-tabs{
+	border: none;
+}
+.issue .btn{
+	width: auto;
+	position: relative;
+	padding: 0.5rem 5rem;
+}
+
+.issue .btn::after {
+  content: "\f107";
+  color: #333;
+  top: 0px;
+  right: 15px;
+  position: absolute;
+  font-family: "FontAwesome";
+  font-size: 2rem;
+  color: white;
+}
+
+.issue .btn[aria-expanded="true"]::after {
+  content: "\f106";
+}

@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+  <title>Security and Privacy Assessment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Security and Privacy Assessment of Ride-Hailing Service</h1>
+    <p>My name is Loi Truong, a consultant engineer at Cyber Security XYZ. I was hired to investigate the privacy issues with your ride-hailing service. The assessment below will list all the vulnerabilities I have found in your service.</p>
+
+    <div id="group">    
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne" data-parent="#group">
+            Methodology
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo" data-parent="#group">
+            Abstract of Findings
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#collapseThree" role="button" aria-expanded="false" aria-controls="collapseThree" data-parent="#group">
+            Issues Found
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#collapseFour" role="button" aria-expanded="false" aria-controls="collapseFour" data-parent="#group">
+            Conclusion
+          </a>
+        </li>
+      </ul>
+      <div id="collapseOne" class="collapse show" data-parent="#group">
+        <div class="card card-body">
+          <p>My approach is to crack down on your system by testing the individual API route of your service. Postman is one tool I use to manipulate the request headers to test all the available routes.</p>
+        </div>
+      </div>
+      <div id="collapseTwo" class="collapse" data-parent="#group">
+        <div class="card card-body">
+          <p>The ride-hailing service has multiple high vulnerabilities that must be taken care of immediately. These vulnerabilities can harm or target the users directly and also can manipulate the database.</p>
+        </div>
+      </div>
+      <div id="collapseThree" class="collapse" data-parent="#group">
+        <div class="card card-body">
+          <div class="issue">          
+            <p>
+              <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#issue1" aria-expanded="true" aria-controls="issue1">
+                Issue #1
+              </button>
+            </p>
+            <div class="collapse show" id="issue1">
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th scope="row">Issue</th>
+                    <td>Database Injection</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Page</th>
+                    <td>/vehicle.json</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Severity</th>
+                    <td>
+                      <p>High</p>
+                      <p>The attacker can provide a username to bypass the where clause and inject it with a malicious statement.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Description</th>
+                    <td>
+                      <p>On line 87, the user inputs concatenate as part of the query and which causes the attacker can inject directly into the query statement.</p>
+                      <p><img class="img-fluid" src="./images/issue-1.png" alt="Issue #2"></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Proof of vulnerability</th>
+                    <td>
+                      <code>/vehicle.json?username=loi'%20or%20'1'='1</code>
+                      <p><img class="img-fluid" src="./images/issue-1-proof.png" alt="Issue #1 Proof"></p>
+                      <p>The query returns all vehicles even though we only want to return based on the username</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Resolution</th>
+                    <td>
+                      <p>Convert the query string to prepared statement on line 87 and 88</p>
+                      <code>
+                        theQuery = "SELECT * FROM vehicles WHERE username = $1";
+                        client.query(theQuery, [usernameEntry], (error, result) => {
+                          if (!error) {
+                            response.send(result.rows);
+                          }
+                        });
+                      </code>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr>
+          <hr>
+          <hr>
+          <div class="issue">          
+            <p>
+              <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#issue2" aria-expanded="true" aria-controls="issue2">
+                Issue #2
+              </button>
+            </p>
+            <div class="collapse show" id="issue2">
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th scope="row">Issue</th>
+                    <td>Bad Programming Pratice</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Page</th>
+                    <td>/vehicle.json</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Severity</th>
+                    <td>
+                      <p>Low</p>
+                      <p>The user input needs to be sanitized. Fortunately, we don't store or show this user input.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Description</th>
+                    <td>
+                      <p>Line 87 uses raw user input, the usernameEntry variable, without sanitizing the data.</p>
+                      <p><img class="img-fluid" src="./images/issue-1.png" alt="Issue #1"></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Proof of vulnerability</th>
+                    <td>
+                      <code>/vehicle.json?username='&lt;script&gt;alert(&quot;loi&quot;)&lt;/script&gt;'</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Resolution</th>
+                    <td>
+                      <p>Escape the usernameEntry</p>
+                      <code>
+                        usernameEntry = validator.escape(usernameEntry);
+                      </code>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr>
+          <hr>
+          <hr>
+          <div class="issue">          
+            <p>
+              <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#issue3" aria-expanded="true" aria-controls="issue3">
+                Issue #3
+              </button>
+            </p>
+            <div class="collapse show" id="issue3">
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th scope="row">Issue</th>
+                    <td>Database Injection</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Page</th>
+                    <td>/passenger.json</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Severity</th>
+                    <td>
+                      <p>High</p>
+                      <p>The attacker can provide a username to bypass the where clause and inject it with a malicious statement.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Description</th>
+                    <td>
+                      <p>On line 72, the user inputs concatenate as part of the query and which causes the attacker can inject directly into the query statement.</p>
+                      <p><img class="img-fluid" src="./images/issue-3.png" alt="Issue #3"></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Proof of vulnerability</th>
+                    <td>
+                      <code>/passenger.json?username=loi'%20or%20'1'='1</code>
+                      <p><img class="img-fluid" src="./images/issue-3-proof.png" alt="Issue #3 Proof"></p>
+                      <p>The query returns all passengers even though we only want to return based on the username</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Resolution</th>
+                    <td>
+                      <p>Convert the query string to prepared statement on line 72 and 73</p>
+                      <code>
+                        theQuery = "SELECT * FROM passengers WHERE username = $1";
+                        client.query(theQuery, [usernameEntry], (error, result) => {
+                          if (!error) {
+                            response.send(result.rows);
+                          }
+                        });
+                      </code>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr>
+          <hr>
+          <hr>
+          <div class="issue">          
+            <p>
+              <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#issue4" aria-expanded="true" aria-controls="issue4">
+                Issue #4
+              </button>
+            </p>
+            <div class="collapse show" id="issue4">
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th scope="row">Issue</th>
+                    <td>Bad Programming Pratice</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Page</th>
+                    <td>/passenger.json</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Severity</th>
+                    <td>
+                      <p>Low</p>
+                      <p>The user input needs to be sanitized. Fortunately, we don't store or show this user input.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Description</th>
+                    <td>
+                      <p>Line 72 uses raw user input, the usernameEntry variable, without sanitizing the data.</p>
+                      <p><img class="img-fluid" src="./images/issue-3.png" alt="Issue #4"></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Proof of vulnerability</th>
+                    <td>
+                      <code>/passenger.json?username='&lt;script&gt;alert(&quot;loi&quot;)&lt;/script&gt;'</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Resolution</th>
+                    <td>
+                      <p>Escape the usernameEntry</p>
+                      <code>
+                        usernameEntry = validator.escape(usernameEntry);
+                      </code>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr>
+          <hr>
+          <hr>
+          <div class="issue">          
+            <p>
+              <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#issue5" aria-expanded="true" aria-controls="issue5">
+                Issue #5
+              </button>
+            </p>
+            <div class="collapse show" id="issue5">
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th scope="row">Issue</th>
+                    <td>Cross-Site Scripting</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Page</th>
+                    <td>
+                      <p>/</p>
+                      <p>/rides</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Severity</th>
+                    <td>
+                      <p>High</p>
+                      <p>The malicious javascript can be injected on the homepage and exposed to all users.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Description</th>
+                    <td>
+                      <p>The attacker can add malicious javascript code to the POST request /rides. These malicious javascript can use to steal privacy information from the user's browsers, such as cookies. Or redirect them to somewhere else.</p>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Proof of vulnerability</th>
+                    <td>
+                      <p>I've provided my username as a javascript tag that does alert commands. When I visited the homepage, it shows up the alert.</p>
+                      <p><img class="img-fluid" src="./images/issue-5-proof-1.png" alt="Issue #5 proof"></p>
+                      <p><img class="img-fluid" src="./images/issue-5-proof-2.png" alt="Issue #5 proof"></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Resolution</th>
+                    <td>
+                      <p>We must change the code from sanitizing the username input to fixing this issue.</p>
+                      <code>
+                        username = validator.escape(username);
+                      </code>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr>
+          <hr>
+          <hr>
+        </div>
+      </div>
+      <div id="collapseFour" class="collapse" data-parent="#group">
+        <div class="card card-body">
+          <p>To avoid these issues in the future, I suggest training your developers to make them aware of OWASP Top 10. Also, make them do pair code reviews for all the code deployment.</p>
+          <p>Notes for developers, always sanitize user input and prepare SQL statements.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
